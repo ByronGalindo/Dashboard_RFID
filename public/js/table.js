@@ -79,8 +79,8 @@ function showRecentScans(data) {
     }
 
     allDatesAndTimes.sort((a, b) => {
-        const [dayA, monthA, yearA] = a.date.split('-');
-        const [dayB, monthB, yearB] = b.date.split('-');
+        const [yearA, monthA,  dayA] = a.date.split('-');
+        const [yearB, monthB,  dayB] = b.date.split('-');
         const dateA = new Date(`${monthA}-${dayA}-${yearA} ${a.time}`);
         const dateB = new Date(`${monthB}-${dayB}-${yearB} ${b.time}`);
         return dateB - dateA;

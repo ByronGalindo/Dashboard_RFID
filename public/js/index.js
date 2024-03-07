@@ -72,8 +72,8 @@ function showRecentScans(data) {
     }
 
     allDatesAndTimes.sort((a, b) => {
-        const [dayA, monthA, yearA] = a.date.split('-');
-        const [dayB, monthB, yearB] = b.date.split('-');
+        const [yearA, monthA,  dayA] = a.date.split('-');
+        const [yearB, monthB,  dayB] = b.date.split('-');
         const dateA = new Date(`${monthA}-${dayA}-${yearA} ${a.time}`);
         const dateB = new Date(`${monthB}-${dayB}-${yearB} ${b.time}`);
         return dateB - dateA;
@@ -111,7 +111,7 @@ function updateTodayScansCount(dataHistorico) {
     const today = new Date();
     const options = { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'America/Bogota' };
     const [month, day, year]= today.toLocaleDateString('en-US', options).split('/');;
-    const formattedTodayDate = `${day.padStart(2, '0')}-${month.padStart(2, '0')}-${year}`;
+    const formattedTodayDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
     let todayScansCount = 0;
     let totalScansCount = 0;
 
