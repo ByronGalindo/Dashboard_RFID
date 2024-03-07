@@ -40,8 +40,8 @@ const historialRef = db.ref('Historial');
 const scansTableBody = document.getElementById('scansTable');
 const lastHourScanElement = document.getElementById('lastHourScan');
 const lastUserScanElement = document.getElementById('lastUserScan');
-const todayScansElement = document.getElementById('todayScans');
-const totalScansElement = document.getElementById('totalScans');
+const firstHourScanElement = document.getElementById('firstHourScan');
+const lastMembraneElement = document.getElementById('lastMembrane');
 
 // Función para agregar filas a la tabla
 function addTableRow(date, time, rfid, user) {
@@ -91,9 +91,19 @@ function showRecentScans(data) {
     const lastScanTime = recentScans[0].time;
     const lastScanData = data[lastScanDate][lastScanTime];
 
+
+    // Obtener el registro mas antiguo/dia
+    const scansDate = data[lastScanDate];
+    const scansLastDate = Object.keys(scansDate);
+    const firstHourScan = scansLastDate[0];
+    
+
     // Actualizar los valores de los elementos
     lastHourScanElement.textContent = lastScanTime;
     lastUserScanElement.textContent = lastScanData.Usuario;
+    lastMembraneElement.textContent = lastScanData.RFID;
+    firstHourScanElement.textContent = firstHourScan;
+
 }
 
 // Función para obtener y mostrar el conteo de todos los escaneos realizados el día de hoy y el total de escaneos realizados en el mes
@@ -106,8 +116,6 @@ function updateTodayScansCount(dataHistorico) {
     let totalScansCount = 0;
 
     for (const date in dataHistorico) {
-        console.log('date', date)
-        console.log('date formateado', formattedTodayDate)
         if (date === formattedTodayDate) {
             todayScansCount += Object.keys(dataHistorico[date]).length;
         }
