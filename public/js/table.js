@@ -34,7 +34,40 @@
     
     // Función para manejar el clic en el botón de descarga
     function handleDownloadButtonClick() {
-        const wb = XLSX.utils.table_to_book(document.getElementById('totalScans'), {sheet: 'Scans'});
+        // Obtener la tabla HTML
+        const table = document.getElementById('totalScans');
+
+        // Obtener las cabeceras de la tabla
+        const headers = [];
+        table.querySelectorAll('th').forEach(header => {
+            const text = header.textContent.trim();
+            if (text !== "") {
+                headers.push(text);
+            }
+        });
+
+        // Obtener los datos de la tabla
+        const data = [headers];
+        const rows = table.querySelectorAll('tr');
+        rows.forEach(row => {
+            const rowData = [];
+            row.querySelectorAll('td').forEach(cell => {
+                const text = cell.textContent.trim();
+                if (text !== "") {
+                    rowData.push(text);
+                }
+            });
+            if (rowData.length > 0) {
+                data.push(rowData);
+            }
+        });
+
+        // Crear un libro Excel con los mismos datos de la tabla y las cabeceras
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Scans');
+
+        // Descargar el libro Excel
         XLSX.writeFile(wb, 'scans.xlsx');
     }
 
@@ -81,8 +114,8 @@ function showRecentScans(data) {
     allDatesAndTimes.sort((a, b) => {
         const [yearA, monthA,  dayA] = a.date.split('-');
         const [yearB, monthB,  dayB] = b.date.split('-');
-        const dateA = new Date(`${monthA}-${dayA}-${yearA} ${a.time}`);
-        const dateB = new Date(`${monthB}-${dayB}-${yearB} ${b.time}`);
+        const dateA = new Date(`${yearA}-${monthA}-${dayA} ${a.time}`);
+        const dateB = new Date(`${yearB}-${monthB}-${dayB} ${b.time}`);
         return dateB - dateA;
     });
 
